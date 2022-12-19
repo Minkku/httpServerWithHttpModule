@@ -39,8 +39,13 @@ const users = [ //여기 부분은 회원가입 공간
       if(url === '/using') {
         response.writeHead(200,{'Content-Type' : 'application/json'})
         response.end(JSON.stringify({message : 'postCreated'}))
-      };
+      } else if(url === "/post"){   
+        let data='';
+          response.writeHead(200,{"Content-Type" : "application/json"});
+          response.end(JSON.stringify({"data" : data}));
+      }
       // === 사용자들의 회원가입 ===
+
     } else if (method === 'POST'){
       if(url === '/users/signup'){
         let body= "";
@@ -62,6 +67,7 @@ const users = [ //여기 부분은 회원가입 공간
           response.end(JSON.stringify({"meesage" : 'userCreated' }));
         });
       }
+      // ==== 게시글 등록하기 =====
 
       if(url === '/posted'){
         let postBody = "";
@@ -85,7 +91,7 @@ const users = [ //여기 부분은 회원가입 공간
       }
     };
   };
-      
+     
 server.on("request", httpRequestListner)
 
 const IP = '127.0.0.1'
