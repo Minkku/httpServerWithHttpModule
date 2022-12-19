@@ -39,6 +39,7 @@ const users = [ //여기 부분은 회원가입 공간
       if(url === '/using') {
         response.writeHead(200,{'Content-Type' : 'application/json'})
         response.end(JSON.stringify({message : 'postCreated'}))
+        // ==== 게시글 목록 조회하기 ====
       } else if(url === "/post"){   
         let data='';
           response.writeHead(200,{"Content-Type" : "application/json"});
