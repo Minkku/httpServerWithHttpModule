@@ -35,30 +35,57 @@ const users = [ //여기 부분은 회원가입 공간
   const httpRequestListner = function(request, response){
       const { url, method } = request
 
-      if (method === 'POST'){
-          if(url === 'users'){
-              let body ='';
-              request.on('data',(data) => {body += data;})
+    if(method === 'GET'){
+      if(url === '/using') {
+        response.writeHead(200,{'Content-Type' : 'application/json'})
+        response.end(JSON.stringify({message : 'postCreated'}))
+      };
+      // === 사용자들의 회원가입 ===
+    } else if (method === 'POST'){
+      if(url === '/users/signup'){
+        let body= "";
 
-              request.on('end', () => {
-                  const user = JSON.parse(body);
+        request.on("data", (data) =>{
+          body += data;
+        });
 
-                  users.push({
-                      id: user.id,
-                      name: user.name,
-                      email: user.email,
-                      password: user.password
-                  })
+        request.on("end", () =>{
+          const user = JSON.parse(body);
 
-                  res.end(JSON.stringify({messeage : 'ok!'}));
-                  
-              })
-              res.writeHead(200, {'Content-Type' : 'application/json'})
-              res.end(JSON.stringify({messeage: "userCreated"}))
-          };
+          users.push({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            password: user.password,
+          });
+          response.writeHead(200, {'Content-Type' : 'application/json'})
+          response.end(JSON.stringify({"meesage" : 'userCreated' }));
+        });
       }
-}
 
+      if(url === '/posted'){
+        let postBody = "";
+
+        request.on("data", (data) => {
+          postBody += data;
+        });
+        request.on("end", () =>{
+          const post = JSON.parse(postBody);
+
+            posts.push({
+                id: post.id,
+                title: post.title,
+                content: post.content,
+                userId: post.userId,
+          });
+            
+          response.writeHead(200,{"Content-Type" : "application.json"});
+          response.end(JSON.stringify({"message" : "postCreated"}));
+        });
+      }
+    };
+  };
+      
 server.on("request", httpRequestListner)
 
 const IP = '127.0.0.1'
